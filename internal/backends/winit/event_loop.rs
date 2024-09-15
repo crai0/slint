@@ -456,8 +456,8 @@ impl winit::application::ApplicationHandler<SlintUserEvent> for EventLoopState {
                     winit::event::MouseButton::Right => PointerEventButton::Right,
                     winit::event::MouseButton::Middle => PointerEventButton::Middle,
                     winit::event::MouseButton::Other(_) => PointerEventButton::Other,
-                    winit::event::MouseButton::Back => PointerEventButton::Other,
-                    winit::event::MouseButton::Forward => PointerEventButton::Other,
+                    winit::event::MouseButton::Back => PointerEventButton::Back,
+                    winit::event::MouseButton::Forward => PointerEventButton::Forward,
                 };
                 let ev = match state {
                     winit::event::ElementState::Pressed => {
