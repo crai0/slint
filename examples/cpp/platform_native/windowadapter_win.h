@@ -122,8 +122,7 @@ struct MyWindowAdapter : public slint::platform::WindowAdapter
                                                   PointerEventButton::Right);
             break;
         case WM_XBUTTONDOWN:
-            UINT button = GET_XBUTTON_WPARAM(wParam);
-            switch(button) {
+            switch(GET_XBUTTON_WPARAM(wParam)) {
             case XBUTTON1:
                 window().dispatch_pointer_press_event(LogicalPosition({ x, y }),
                                                       PointerEventButton::Back);
