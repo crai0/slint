@@ -169,6 +169,22 @@ pub fn token_info(document_cache: &mut DocumentCache, token: SyntaxToken) -> Opt
                 return Some(TokenInfo::LocalCallback(p));
             }
             return find_property_declaration_in_base(document_cache, element, &prop_name);
+        }  else if let Some(n) = syntax_nodes::CallbackForwarding::new(node.clone()) {
+            if token.kind() != SyntaxKind::Identifier {
+                return None;
+            }
+            let prop_name = i_slint_compiler::parser::normalize_identifier(token.text());
+            if prop_name != i_slint_compiler::parser::identifier_text(&n)? {
+                return None;
+            }
+            let element = syntax_nodes::Element::new(n.parent()?)?;
+            if let Some(p) = element.CallbackDeclaration().find_map(|p| {
+                (i_slint_compiler::parser::identifier_text(&p.DeclaredIdentifier())? == prop_name)
+                    .then_some(p)
+            }) {
+                return Some(TokenInfo::LocalCallback(p));
+            }
+            return find_property_declaration_in_base(document_cache, element, &prop_name);
         } else if node.kind() == SyntaxKind::DeclaredIdentifier {
             let parent = node.parent()?;
             if parent.kind() == SyntaxKind::PropertyChangedCallback {
